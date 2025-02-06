@@ -1,5 +1,5 @@
 export default function Logo() {
   return (
-    <h1 className="text-2xl font-bold">DARE YOU</h1>
+    <h1 className="text-2xl font-bold text-black">DARE YOU</h1>
   );
 }

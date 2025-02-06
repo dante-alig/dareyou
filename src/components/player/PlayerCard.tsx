@@ -23,7 +23,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
     isPlayerValidated,
     registerPlayer,
     removeChallenge,
-    getPlayerAvatar
+    getPlayerAvatar,
   } = useChallengeContext();
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
               type="text"
               value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
-              className="text-xl text-blue-600 bg-white rounded-lg px-2 py-1"
+              className="text-xl text-blue-600 bg-white rounded-lg px-2 py-1 font-bold"
               autoFocus
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
@@ -110,7 +110,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
               }}
             />
           ) : (
-            <span className="text-xl text-black">{playerName}</span>
+            <span className="text-xl text-black font-bold">{playerName}</span>
           )}
           {!isDisabled && (
             <button
@@ -171,11 +171,11 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
         ))}
       </div>
       <button
-        className={`w-full bg-[#FF3200] rounded-2xl py-3 text-center ${
+        className={`w-full ${
           isDisabled
-            ? "bg-white-300 text-gray-500"
-            : "text-white-700 hover:bg-gray-50"
-        }`}
+            ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
+            : "bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-400 hover:to-orange-500"
+        } rounded-2xl py-3 text-center`}
         onClick={handleValidate}
         disabled={isDisabled || playerChallenges.length === 0}
       >
