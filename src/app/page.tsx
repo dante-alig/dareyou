@@ -55,7 +55,7 @@ export default function Introduction() {
           </motion.div>
 
           {/* Texte principal */}
-          <div className="text-center space-y-4 max-w-2xl">
+          <div className="text-center space-y-4 max-w-2xl relative z-50">
             <motion.h1
               className="text-5xl md:text-8xl font-bold uppercase tracking-wider mb-4"
               style={{ fontFamily: "'Lilita One', cursive" }}
