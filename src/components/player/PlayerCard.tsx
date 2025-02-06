@@ -77,11 +77,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
   };
 
   return (
-    <div
-      className={`bg-gray-100 rounded-3xl p-6 shadow-lg ${
-        isDisabled ? "opacity-50" : ""
-      }`}
-    >
+    <div className={`bg-white rounded-lg shadow-lg p-6 w-full max-w-[760px] mx-auto ${isDisabled ? "opacity-50" : ""}`}>
       <div className="flex items-center gap-4 mb-4">
         <div className="w-16 h-16 relative rounded-full overflow-hidden">
           {avatarNumber !== null ? (

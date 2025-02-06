@@ -100,7 +100,7 @@ export default function Draw() {
       <h1 className="text-2xl font-bold mb-8 text-black text-center">
         Tirage au sort des défis
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 perspective-1000">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
         <AnimatePresence>
           {challenges.map((challenge, index) =>
             selectedIndex === null || selectedIndex === index ? (
@@ -119,7 +119,7 @@ export default function Draw() {
                 onClick={() => handleCardClick(index)}
                 className={`${
                   cardColorMap[index] || "bg-gray-400"
-                } p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer min-h-[200px] flex items-center justify-center text-center preserve-3d relative`}
+                } p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer min-h-[200px] flex items-center justify-center text-center preserve-3d relative max-w-[400px] mx-auto w-full`}
               >
                 <div
                   className="absolute w-full h-full backface-hidden flex items-center justify-center"
