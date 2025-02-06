@@ -5,59 +5,24 @@ import { useChallengeContext } from "@/context/ChallengeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import confetti from 'canvas-confetti';
-
-const cardColors = [
-  "bg-red-400",
-  "bg-blue-400",
-  "bg-green-400",
-  "bg-yellow-400",
-  "bg-purple-400",
-  "bg-pink-400",
-  "bg-indigo-400",
-  "bg-orange-400",
-  "bg-teal-400",
-  "bg-cyan-400",
-];
-
-const firework = () => {
-  const duration = 2 * 1000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 35, spread: 360, ticks: 50, zIndex: 0 };
-
-  function randomInRange(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-  }
-
-  const interval: NodeJS.Timeout = setInterval(function() {
-    const timeLeft = animationEnd - Date.now();
-
-    if (timeLeft <= 0) {
-      return clearInterval(interval);
-    }
-
-    const particleCount = 40 * (timeLeft / duration);
-    
-    // Lancer les confettis depuis des positions aléatoires
-    confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-    });
-    confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-    });
-  }, 200);
-};
+import confetti from "canvas-confetti";
+import { cardColors } from "../../utils/cardColors";
+import {
+  handleCardClick,
+  handleRestart,
+  getPlayerName,
+} from "../../utils/handleDraw";
+import { firework } from "../../utils/firework";
 
 export default function Draw() {
   const router = useRouter();
   const { challenges, resetGame, playerNames } = useChallengeContext();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [randomChallenge, setRandomChallenge] = useState<{ challenge: string; playerNumber: number } | null>(null);
+  const [randomChallenge, setRandomChallenge] = useState<{
+    challenge: string;
+    playerNumber: number;
+  } | null>(null);
   const [cardColorMap, setCardColorMap] = useState<string[]>([]);
 
   useEffect(() => {
@@ -67,33 +32,6 @@ export default function Draw() {
       .slice(0, challenges.length);
     setCardColorMap(shuffledColors);
   }, [challenges.length]);
-
-  const handleCardClick = (index: number) => {
-    if (selectedIndex === null) {
-      setSelectedIndex(index);
-      setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * challenges.length);
-        const selectedChallenge = challenges[randomIndex];
-        setRandomChallenge({
-          challenge: selectedChallenge.challenge,
-          playerNumber: selectedChallenge.player
-        });
-        setIsFlipped(true);
-        // Lancer les feux d'artifice après que la carte soit retournée
-        setTimeout(firework, 500);
-      }, 800);
-    }
-  };
-
-  const getPlayerName = (playerNumber: number) => {
-    const player = playerNames.find(p => p.player === playerNumber);
-    return player ? player.name : `Joueur ${playerNumber}`;
-  };
-
-  const handleRestart = () => {
-    resetGame();
-    router.replace("/player");
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-100 via-purple-100 to-indigo-200 p-8">
@@ -116,7 +54,17 @@ export default function Draw() {
                 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5 }}
-                onClick={() => handleCardClick(index)}
+                onClick={() =>
+                  handleCardClick(
+                    index,
+                    selectedIndex,
+                    challenges,
+                    setSelectedIndex,
+                    setRandomChallenge,
+                    setIsFlipped,
+                    firework
+                  )
+                }
                 className={`${
                   cardColorMap[index] || "bg-gray-400"
                 } p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer min-h-[200px] flex items-center justify-center text-center preserve-3d relative max-w-[400px] mx-auto w-full`}
@@ -146,10 +94,16 @@ export default function Draw() {
                 >
                   <div className="flex flex-col items-center space-y-4 p-4 w-full">
                     <p className="text-sm font-medium text-purple-600">
-                      Défi proposé par {randomChallenge ? getPlayerName(randomChallenge.playerNumber) : ''}
+                      Défi proposé par{" "}
+                      {randomChallenge
+                        ? getPlayerName(
+                            randomChallenge.playerNumber,
+                            playerNames
+                          )
+                        : ""}
                     </p>
                     <p className="font-medium text-xl text-gray-800 break-words w-full text-center">
-                      {randomChallenge?.challenge || ''}
+                      {randomChallenge?.challenge || ""}
                     </p>
                   </div>
                 </div>
@@ -159,14 +113,16 @@ export default function Draw() {
         </AnimatePresence>
       </div>
 
-      <div className="mt-8 flex justify-center">
-        <button
-          onClick={handleRestart}
-          className="bg-white text-purple-600 px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 text-lg font-medium"
-        >
-          Recommencer
-        </button>
-      </div>
+      {selectedIndex !== null && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => handleRestart(resetGame, router)}
+            className="bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-purple-700 transition-colors duration-200"
+          >
+            Recommencer
+          </button>
+        </div>
+      )}
     </div>
   );
 }
