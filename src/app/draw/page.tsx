@@ -5,7 +5,6 @@ import { useChallengeContext } from "@/context/ChallengeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import confetti from "canvas-confetti";
 import { cardColors } from "../../utils/cardColors";
 import {
   handleCardClick,
