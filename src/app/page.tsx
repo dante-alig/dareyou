@@ -11,7 +11,7 @@ export default function Introduction() {
         {/* Images du haut */}
         <div>
           <motion.div
-            className="absolute top-[15%] left-[10%]"
+            className="absolute top-[5%] sm:top-[10%] left-[5%] sm:left-[2%] md:top-[15%] md:left-[10%]"
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -31,7 +31,7 @@ export default function Introduction() {
           </motion.div>
 
           <motion.div
-            className="absolute top-[15%] right-[15%]"
+            className="absolute top-[5%] sm:top-[10%] right-[5%] sm:right-[2%] md:top-[15%] md:right-[15%]"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
