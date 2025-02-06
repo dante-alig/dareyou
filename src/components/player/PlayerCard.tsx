@@ -126,7 +126,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
         <input
           type="text"
           placeholder="nom du defie"
-          className="w-full p-3 rounded-lg pr-10 bg-gray-200 text-blue-600"
+          className="w-full p-3 rounded-lg pr-10 bg-gray-200 text-purple-600"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           disabled={isDisabled}
@@ -158,7 +158,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
         {playerChallenges.map((challenge, index) => (
           <div
             key={index}
-            className="bg-white p-3 rounded-lg shadow text-red-700 flex justify-between items-center"
+            className="bg-white p-3 rounded-lg shadow text-black flex justify-between items-center"
           >
             <span>{challenge.challenge}</span>
             <button

@@ -1,29 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useChallengeContext } from "@/context/ChallengeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-const emojis = [
-  "🎲",
-  "🎮",
-  "🎯",
-  "🎪",
-  "🎨",
-  "🎭",
-  "🎪",
-  "🎡",
-  "🎢",
-  "🎠",
-  "🎬",
-  "🎤",
-  "🎧",
-  "🎸",
-  "🎹",
-  "🎺",
-  "🎻",
-  "🎼",
+const cardColors = [
+  'bg-red-400',
+  'bg-blue-400',
+  'bg-green-400',
+  'bg-yellow-400',
+  'bg-purple-400',
+  'bg-pink-400',
+  'bg-indigo-400',
+  'bg-orange-400',
+  'bg-teal-400',
+  'bg-cyan-400',
 ];
 
 export default function Draw() {
@@ -32,6 +25,15 @@ export default function Draw() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [randomChallenge, setRandomChallenge] = useState<string>("");
+  const [cardColorMap, setCardColorMap] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Mélanger les couleurs pour avoir un ordre aléatoire
+    const shuffledColors = [...cardColors]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, challenges.length);
+    setCardColorMap(shuffledColors);
+  }, [challenges.length]);
 
   const handleCardClick = (index: number) => {
     if (selectedIndex === null) {
@@ -50,8 +52,8 @@ export default function Draw() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-700 p-8">
-      <h1 className="text-3xl font-bold mb-8 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-100 via-purple-100 to-indigo-200 p-8">
+      <h1 className="text-3xl font-bold mb-8 text-black">
         Tirage au sort des défis
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 perspective-1000">
@@ -71,7 +73,7 @@ export default function Draw() {
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5 }}
                 onClick={() => handleCardClick(index)}
-                className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer min-h-[200px] flex items-center justify-center text-center preserve-3d"
+                className={`${cardColorMap[index] || 'bg-gray-400'} p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer min-h-[200px] flex items-center justify-center text-center preserve-3d relative`}
               >
                 <div 
                   className="absolute w-full h-full backface-hidden flex items-center justify-center"
@@ -79,9 +81,14 @@ export default function Draw() {
                     backfaceVisibility: "hidden",
                   }}
                 >
-                  <p className="font-medium text-4xl">
-                    {emojis[index % emojis.length]}
-                  </p>
+                  <div className="relative w-24 h-24">
+                    <Image
+                      src="/ghost_recto.png"
+                      alt="Ghost Card"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 </div>
 
                 <div
@@ -101,24 +108,14 @@ export default function Draw() {
         </AnimatePresence>
       </div>
 
-      <AnimatePresence>
-        {isFlipped && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ delay: 0.5, duration: 0.3 }}
-            className="mt-8 flex justify-center"
-          >
-            <button
-              onClick={handleRestart}
-              className="bg-white text-blue-700 font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 text-lg"
-            >
-              Recommencer une partie
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={handleRestart}
+          className="bg-white text-blue-600 px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 text-lg font-medium"
+        >
+          Recommencer
+        </button>
+      </div>
     </div>
   );
 }
