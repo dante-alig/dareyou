@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChallengeContext } from "@/context/ChallengeContext";
 import Image from "next/image";
 
@@ -8,18 +8,11 @@ interface PlayerCardProps {
   playerNumber: number;
 }
 
-const getRandomAvatar = () => {
-  // Nombre total d'avatars disponibles (de 1 à 8)
-  const totalAvatars = 6;
-  // Retourne un nombre entre 1 et 8
-  return Math.floor(Math.random() * totalAvatars) + 1;
-};
-
 export default function PlayerCard({ playerNumber }: PlayerCardProps) {
-  const [inputValue, setInputValue] = React.useState("");
-  const [isEditingName, setIsEditingName] = React.useState(false);
-  const [nameInput, setNameInput] = React.useState("");
-  const [avatarNumber, setAvatarNumber] = React.useState(getRandomAvatar());
+  const [inputValue, setInputValue] = useState("");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [avatarNumber, setAvatarNumber] = useState<number | null>(null);
 
   const {
     challenges,
@@ -30,11 +23,21 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
     isPlayerValidated,
     registerPlayer,
     removeChallenge,
+    getPlayerAvatar
   } = useChallengeContext();
 
   useEffect(() => {
+    // On enregistre le joueur seulement au montage initial
     registerPlayer(playerNumber);
   }, [playerNumber, registerPlayer]);
+
+  useEffect(() => {
+    // On met à jour l'avatar séparément
+    const avatar = getPlayerAvatar(playerNumber);
+    if (avatar !== avatarNumber) {
+      setAvatarNumber(avatar);
+    }
+  }, [playerNumber, getPlayerAvatar, avatarNumber]);
 
   const isDisabled = isPlayerValidated(playerNumber);
 
@@ -81,12 +84,16 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
     >
       <div className="flex items-center gap-4 mb-4">
         <div className="w-16 h-16 relative rounded-full overflow-hidden">
-          <Image
-            src={`/${avatarNumber}.png`}
-            alt={`Avatar du joueur ${playerNumber}`}
-            fill
-            className="object-cover"
-          />
+          {avatarNumber !== null ? (
+            <Image
+              src={`/${avatarNumber}.png`}
+              alt={`Avatar du joueur ${playerNumber}`}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-300" />
+          )}
         </div>
         <div className="flex items-center gap-2">
           {isEditingName && !isDisabled ? (

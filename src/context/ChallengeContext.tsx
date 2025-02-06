@@ -18,10 +18,16 @@ interface PlayerStatus {
   isValidated: boolean;
 }
 
+interface PlayerAvatar {
+  player: number;
+  avatar: number;
+}
+
 interface ChallengeContextType {
   challenges: Challenge[];
   playerNames: PlayerName[];
   playerStatuses: PlayerStatus[];
+  playerAvatars: PlayerAvatar[];
   addChallenge: (playerNumber: number, challenge: string) => void;
   removeChallenge: (challengeToRemove: string) => void;
   updatePlayerName: (playerNumber: number, name: string) => void;
@@ -30,19 +36,46 @@ interface ChallengeContextType {
   registerPlayer: (playerNumber: number) => void;
   resetGame: () => void;
   resetValidations: () => void;
+  getPlayerAvatar: (playerNumber: number) => number;
 }
 
 const ChallengeContext = createContext<ChallengeContextType | undefined>(undefined);
 
+const TOTAL_AVATARS = 6;
+
 export function ChallengeProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [playerNames, setPlayerNames] = useState<PlayerName[]>([]);
   const [playerStatuses, setPlayerStatuses] = useState<PlayerStatus[]>([]);
   const [registeredPlayers, setRegisteredPlayers] = useState<Set<number>>(new Set());
-  const router = useRouter();
+  const [playerAvatars, setPlayerAvatars] = useState<PlayerAvatar[]>([]);
+  const [usedAvatars, setUsedAvatars] = useState<Set<number>>(new Set());
+
+  const getRandomAvatar = () => {
+    const availableAvatars = Array.from(
+      { length: TOTAL_AVATARS },
+      (_, i) => i + 1
+    ).filter(num => !usedAvatars.has(num));
+    
+    if (availableAvatars.length === 0) return 1; // Fallback
+    
+    const randomIndex = Math.floor(Math.random() * availableAvatars.length);
+    return availableAvatars[randomIndex];
+  };
+
+  const getPlayerAvatar = (playerNumber: number) => {
+    const playerAvatar = playerAvatars.find(pa => pa.player === playerNumber);
+    if (playerAvatar) return playerAvatar.avatar;
+    
+    const newAvatar = getRandomAvatar();
+    setUsedAvatars(prev => new Set([...prev, newAvatar]));
+    setPlayerAvatars(prev => [...prev, { player: playerNumber, avatar: newAvatar }]);
+    return newAvatar;
+  };
 
   const registerPlayer = useCallback((playerNumber: number) => {
-    setRegisteredPlayers(prev => new Set(prev).add(playerNumber));
+    setRegisteredPlayers(prev => new Set([...prev, playerNumber]));
   }, []);
 
   const addChallenge = (playerNumber: number, challenge: string) => {
@@ -87,13 +120,14 @@ export function ChallengeProvider({ children }: { children: ReactNode }) {
     setPlayerNames([]);
     setPlayerStatuses([]);
     setRegisteredPlayers(new Set());
+    setPlayerAvatars([]);
+    setUsedAvatars(new Set());
   };
 
   const resetValidations = () => {
     setPlayerStatuses([]);
   };
 
-  // Vérifier si tous les joueurs sont validés
   useEffect(() => {
     const totalPlayers = registeredPlayers.size;
     console.log('Current playerStatuses:', playerStatuses);
@@ -116,6 +150,7 @@ export function ChallengeProvider({ children }: { children: ReactNode }) {
     challenges,
     playerNames,
     playerStatuses,
+    playerAvatars,
     addChallenge,
     removeChallenge,
     updatePlayerName,
@@ -123,7 +158,8 @@ export function ChallengeProvider({ children }: { children: ReactNode }) {
     isPlayerValidated,
     registerPlayer,
     resetGame,
-    resetValidations
+    resetValidations,
+    getPlayerAvatar
   };
 
   return (
