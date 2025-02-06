@@ -29,7 +29,7 @@ const firework = () => {
     return Math.random() * (max - min) + min;
   }
 
-  const interval: any = setInterval(function() {
+  const interval: NodeJS.Timeout = setInterval(function() {
     const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {
@@ -144,11 +144,11 @@ export default function Draw() {
                     transform: "rotateY(180deg)",
                   }}
                 >
-                  <div className="flex flex-col items-center space-y-4 p-4">
+                  <div className="flex flex-col items-center space-y-4 p-4 w-full">
                     <p className="text-sm font-medium text-purple-600">
                       Défi proposé par {randomChallenge ? getPlayerName(randomChallenge.playerNumber) : ''}
                     </p>
-                    <p className="font-medium text-xl text-gray-800">
+                    <p className="font-medium text-xl text-gray-800 break-words w-full text-center">
                       {randomChallenge?.challenge || ''}
                     </p>
                   </div>

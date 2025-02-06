@@ -158,9 +158,9 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
         {playerChallenges.map((challenge, index) => (
           <div
             key={index}
-            className="bg-white p-3 rounded-lg shadow text-black flex justify-between items-center"
+            className="bg-white p-3 rounded-lg shadow text-black flex justify-between items-center gap-2"
           >
-            <span>{challenge.challenge}</span>
+            <span className="truncate flex-1">{challenge.challenge}</span>
             <button
               onClick={() => handleRemoveChallenge(challenge.challenge)}
               className="text-gray-500 hover:text-red-500 transition-colors"
