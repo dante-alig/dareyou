@@ -125,7 +125,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
       <div className="relative mb-4">
         <input
           type="text"
-          placeholder="nom du defie"
+          placeholder="Propose une action"
           className="w-full p-3 rounded-lg pr-10 bg-gray-200 text-purple-600"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
