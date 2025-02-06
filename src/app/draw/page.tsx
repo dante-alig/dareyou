@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useChallengeContext } from "@/context/ChallengeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
