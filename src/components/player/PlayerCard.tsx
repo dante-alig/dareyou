@@ -77,7 +77,11 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-lg p-6 w-full max-w-[760px] mx-auto ${isDisabled ? "opacity-50" : ""}`}>
+    <div
+      className={`bg-white rounded-lg shadow-lg p-6 w-full max-w-[760px] mx-auto ${
+        isDisabled ? "opacity-50" : ""
+      }`}
+    >
       <div className="flex items-center gap-4 mb-4">
         <div className="w-16 h-16 relative rounded-full overflow-hidden">
           {avatarNumber !== null ? (
@@ -121,7 +125,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
       <div className="relative mb-4">
         <input
           type="text"
-          placeholder="Propose une action"
+          placeholder="Propose une défi"
           className="w-full p-3 rounded-lg pr-10 bg-gray-200 text-purple-600"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
