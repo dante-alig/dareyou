@@ -1,24 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👻 Ghost
 
-## Getting Started
+Une application web innovante conçue pour créer et partager des défis entre amis. Développée avec des technologies modernes, Ghost offre une expérience sociale unique et engageante.
 
-First, run the development server:
+## ✨ Fonctionnalités principales
+
+- 🎯 **Système de défis** : Créez, et relevez des défis personnalisés
+- 🎪 **Interface intuitive** : Une expérience utilisateur fluide et moderne
+- 🎨 **Design responsive** : Une interface adaptative pour tous les appareils
+- 🧭 **Navigation optimisée** : Une structure claire et efficace
+
+## 🛠️ Technologies utilisées
+
+- ⚡ Next.js 14
+- 💪 TypeScript
+- 🎭 CSS Modules
+- ⚛️ React
+
+## 🚀 Installation
+
+1. Clonez le repository :
+
+```bash
+git clone [https://github.com/dante-alig/dareyou.git]
+```
+
+2. Installez les dépendances :
+
+```bash
+npm install
+```
+
+3. Démarrez le serveur de développement :
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Accédez à [http://localhost:3000] dans votre navigateur
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Structure du projet
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+📦 Ghost
+ ┣ 📂 src/app         # Configuration principale et pages
+ ┣ 📂 src/components  # Composants réutilisables
+ ┗ 📂 public         # Ressources statiques
+```
 
 ## Learn More
 
