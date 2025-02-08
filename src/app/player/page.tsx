@@ -10,7 +10,7 @@ export default function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
 
   const handleAddPlayer = () => {
-    setPlayerCount(prev => prev + 1);
+    setPlayerCount((prev) => prev + 1);
   };
 
   return (
@@ -25,7 +25,7 @@ export default function PlayerSetup() {
             onClick={handleAddPlayer}
             className="bg-white text-purple-500 px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 text-lg font-medium"
           >
-            Rajouter un joueur
+            Ajouter un joueur
           </button>
           <button
             onClick={resetValidations}

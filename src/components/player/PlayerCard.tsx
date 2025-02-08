@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useChallengeContext } from "@/context/ChallengeContext";
 import Image from "next/image";
+import { getRandomDefi } from "@/utils/random";
 
 interface PlayerCardProps {
   playerNumber: number;
@@ -13,6 +14,7 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [avatarNumber, setAvatarNumber] = useState<number | null>(null);
+  const [isRandomChallenge, setIsRandomChallenge] = useState(false);
 
   const {
     challenges,
@@ -38,6 +40,13 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
       setAvatarNumber(avatar);
     }
   }, [playerNumber, getPlayerAvatar, avatarNumber]);
+
+  useEffect(() => {
+    if (isRandomChallenge && inputValue) {
+      handleAddChallenge();
+      setIsRandomChallenge(false);
+    }
+  }, [inputValue, isRandomChallenge]);
 
   const isDisabled = isPlayerValidated(playerNumber);
 
@@ -126,33 +135,60 @@ export default function PlayerCard({ playerNumber }: PlayerCardProps) {
         <input
           type="text"
           placeholder="Propose une défi"
-          className="w-full p-3 rounded-lg pr-10 bg-gray-200 text-purple-600"
+          className="w-full p-3 rounded-lg pr-20 bg-gray-200 text-purple-600"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           disabled={isDisabled}
         />
-        <button
-          onClick={handleAddChallenge}
-          className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-red-700 w-8 h-8 bg-[#FEE900] flex items-center justify-center rounded-lg ${
-            isDisabled ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isDisabled}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-2">
+          <button
+            onClick={handleAddChallenge}
+            className={`text-red-700 w-8 h-8 bg-[#FEE900] flex items-center justify-center rounded-lg ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isDisabled}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v12M6 12h12"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              setIsRandomChallenge(true);
+              setInputValue(getRandomDefi());
+            }}
+            className={`text-red-700 w-8 h-8 bg-[#FEE900] flex items-center justify-center rounded-lg ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isDisabled}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div className="space-y-2 mb-4">
         {playerChallenges.map((challenge, index) => (
