@@ -5,7 +5,6 @@ import { useChallengeContext } from "@/context/ChallengeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { cardColors } from "../../utils/cardColors";
 import {
   handleCardClick,
   handleRestart,
@@ -25,11 +24,9 @@ export default function Draw() {
   const [cardColorMap, setCardColorMap] = useState<string[]>([]);
 
   useEffect(() => {
-    // Mélanger les couleurs pour avoir un ordre aléatoire
-    const shuffledColors = [...cardColors]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, challenges.length);
-    setCardColorMap(shuffledColors);
+    // Initialiser toutes les cartes en jaune
+    const yellowCards = Array(challenges.length).fill("bg-yellow-400");
+    setCardColorMap(yellowCards);
   }, [challenges.length]);
 
   return (
@@ -61,7 +58,8 @@ export default function Draw() {
                     setSelectedIndex,
                     setRandomChallenge,
                     setIsFlipped,
-                    firework
+                    firework,
+                    playerNames
                   )
                 }
                 className={`${

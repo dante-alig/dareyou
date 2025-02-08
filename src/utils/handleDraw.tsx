@@ -25,13 +25,34 @@ export const handleCardClick = (
   setSelectedIndex: (index: number) => void,
   setRandomChallenge: (challenge: RandomChallenge) => void,
   setIsFlipped: (isFlipped: boolean) => void,
-  firework: () => void
+  firework: () => void,
+  playerNames: PlayerName[]
 ) => {
   if (selectedIndex === null) {
-    setSelectedIndex(index);
+    // Vérifier si un joueur s'appelle Sam
+    const samExists = playerNames.some(player => player.name === "Sam");
+    
+    // Sélectionner une carte aléatoire visuellement (toujours aléatoire pour l'effet visuel)
+    const randomCardIndex = Math.floor(Math.random() * challenges.length);
+    setSelectedIndex(randomCardIndex);
+    
     setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * challenges.length);
-      const selectedChallenge = challenges[randomIndex];
+      let selectedChallenge: Challenge;
+      
+      if (samExists) {
+        // Si Sam existe, on prend son premier défi
+        const samFirstChallenge = challenges.find(challenge => {
+          const playerName = playerNames.find(p => p.player === challenge.player)?.name;
+          return playerName === "Sam";
+        });
+        
+        // Si on trouve un défi de Sam, on le prend, sinon on prend un défi aléatoire
+        selectedChallenge = samFirstChallenge || challenges[Math.floor(Math.random() * challenges.length)];
+      } else {
+        // Sélection aléatoire normale si Sam n'existe pas
+        selectedChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+      }
+
       setRandomChallenge({
         challenge: selectedChallenge.challenge,
         playerNumber: selectedChallenge.player,
