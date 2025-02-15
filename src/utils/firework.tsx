@@ -18,7 +18,6 @@ export const firework = () => {
 
     const particleCount = 40 * (timeLeft / duration);
 
-    // Lancer les confettis depuis des positions aléatoires
     confetti({
       ...defaults,
       particleCount,

@@ -24,7 +24,6 @@ export default function Draw() {
   const [cardColorMap, setCardColorMap] = useState<string[]>([]);
 
   useEffect(() => {
-    // Initialiser toutes les cartes en jaune
     const yellowCards = Array(challenges.length).fill("bg-yellow-400");
     setCardColorMap(yellowCards);
   }, [challenges.length]);
